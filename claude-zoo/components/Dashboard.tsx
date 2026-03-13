@@ -153,21 +153,21 @@ export default function Dashboard() {
   const menu = (
     <div className="absolute top-3 left-3" style={{ zIndex: 50 }}>
       <button
-        className="cursor-pointer flex flex-col gap-[3px] items-center justify-center"
+        className="cursor-pointer"
         style={{
-          width: 28,
-          height: 28,
+          fontFamily: 'monospace',
+          fontSize: 11,
+          color: '#2A2A2A',
           background: '#FFFBE6',
           border: '2px solid #2A2A2A',
           borderRadius: '2px',
           boxShadow: '2px 2px 0 #2A2A2A',
+          padding: '4px 8px',
           imageRendering: 'pixelated',
         }}
         onClick={() => setMenuOpen((p) => !p)}
       >
-        <div style={{ width: 14, height: 2, background: '#2A2A2A' }} />
-        <div style={{ width: 14, height: 2, background: '#2A2A2A' }} />
-        <div style={{ width: 14, height: 2, background: '#2A2A2A' }} />
+        sessions
       </button>
       {menuOpen && (
         <div

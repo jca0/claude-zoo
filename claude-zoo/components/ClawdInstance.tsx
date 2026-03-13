@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import type { Session, SessionStats, ParsedMessage } from '@/lib/types';
 import ThoughtBubble from '@/components/ThoughtBubble';
 import SpeechBubble from '@/components/SpeechBubble';
@@ -36,6 +36,40 @@ export default function ClawdInstance({ session, position, onDrag, name, onRenam
 
   const isActive = session.status === 'active';
   const isIdle = session.status === 'idle';
+  const [blinking, setBlinking] = useState(false);
+
+  // Blink - toggle to blink sprite briefly every 3-5s
+  useEffect(() => {
+    const scheduleBlink = () => {
+      const delay = 3000 + Math.random() * 2000;
+      return setTimeout(() => {
+        setBlinking(true);
+        setTimeout(() => setBlinking(false), 150);
+      }, delay);
+    };
+    let timer = scheduleBlink();
+    const interval = setInterval(() => {
+      clearTimeout(timer);
+      timer = scheduleBlink();
+    }, 5000);
+    return () => { clearTimeout(timer); clearInterval(interval); };
+  }, []);
+
+  // Idle wandering - random hops every few seconds
+  useEffect(() => {
+    if (!isIdle || expanded || showStats) return;
+    const hop = () => {
+      if (dragging.current) return;
+      const dx = (Math.random() - 0.5) * 3;
+      const dy = (Math.random() - 0.5) * 3;
+      const newX = Math.max(0, Math.min(95, position.x + dx));
+      const newY = Math.max(0, Math.min(90, position.y + dy));
+      onDrag(session.id, newX, newY);
+    };
+    const delay = 2000 + Math.random() * 3000;
+    const timer = setTimeout(hop, delay);
+    return () => clearTimeout(timer);
+  }, [isIdle, expanded, showStats, position, session.id, onDrag]);
 
   async function handleToggleExpand() {
     if (expanded) {
@@ -98,7 +132,7 @@ export default function ClawdInstance({ session, position, onDrag, name, onRenam
 
   return (
     <div
-      style={{ position: 'absolute', left: `${position.x}%`, top: `${position.y}%`, zIndex: (showStats || expanded) ? 10 : 1 }}
+      style={{ position: 'absolute', left: `${position.x}%`, top: `${position.y}%`, zIndex: (showStats || expanded) ? 10 : 1, transition: isIdle && !dragging.current ? 'left 0.6s ease-in-out, top 0.6s ease-in-out' : 'none' }}
       className="flex flex-col items-center relative"
     >
       <div className="relative flex flex-col items-center">
@@ -115,12 +149,12 @@ export default function ClawdInstance({ session, position, onDrag, name, onRenam
           />
         )}
         <img
-          src="/clawd.png"
+          src={blinking ? '/clawd_blink.svg' : '/clawd.svg'}
           alt="Clawd"
           width={80}
           height={80}
           style={{ imageRendering: 'pixelated' }}
-          className={isActive ? 'animate-clawd-bounce cursor-grab active:cursor-grabbing' : 'cursor-grab active:cursor-grabbing'}
+          className="cursor-grab active:cursor-grabbing"
           onMouseDown={handleMouseDown}
           draggable={false}
         />
