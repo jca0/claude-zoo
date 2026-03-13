@@ -12,6 +12,7 @@ const MARKER = 'localhost:3000/api/hooks/';
 
 const HOOK_EVENTS: Record<string, string> = {
   SessionStart: 'http://localhost:3000/api/hooks/session-start',
+  PreToolUse: 'http://localhost:3000/api/hooks/pre-tool-use',
   PostToolUse: 'http://localhost:3000/api/hooks/post-tool-use',
   Stop: 'http://localhost:3000/api/hooks/stop',
   SessionEnd: 'http://localhost:3000/api/hooks/session-end',
