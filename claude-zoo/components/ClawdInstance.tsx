@@ -113,7 +113,8 @@ export default function ClawdInstance({ session, position, onDrag, name, onRenam
       {editing ? (
         <input
           ref={inputRef}
-          className="text-xs text-center mt-1 bg-white border border-gray-300 rounded px-1 outline-none w-[120px]"
+          className="text-xs text-center mt-1 px-1 outline-none w-[120px]"
+          style={{ fontFamily: 'monospace', color: '#2A2A2A', fontWeight: 'bold', background: '#FFFBE6', border: '2px solid #2A2A2A', borderRadius: '2px' }}
           value={editValue}
           onChange={(e) => setEditValue(e.target.value)}
           onBlur={() => {
@@ -133,7 +134,8 @@ export default function ClawdInstance({ session, position, onDrag, name, onRenam
         />
       ) : (
         <span
-          className="text-xs text-gray-500 mt-1 whitespace-nowrap select-none cursor-pointer hover:text-gray-700"
+          className="text-xs mt-1 whitespace-nowrap select-none cursor-pointer"
+          style={{ fontFamily: 'monospace', color: '#2A2A2A', fontWeight: 'bold', textShadow: '1px 1px 0 rgba(255,255,255,0.5)' }}
           onDoubleClick={() => {
             setEditValue(name || shortenPath(session.cwd));
             setEditing(true);
