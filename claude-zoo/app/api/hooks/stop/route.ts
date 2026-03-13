@@ -1,4 +1,4 @@
-import { endSession } from '@/lib/registry';
+import { idleSession } from '@/lib/registry';
 
 export async function POST(request: Request) {
   try {
@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const { session_id } = body;
     console.log('[claude-zoo] stop:', { session_id });
     if (typeof session_id === 'string' && session_id) {
-      endSession(session_id);
+      idleSession(session_id);
     }
   } catch (e) {
     console.error('[claude-zoo] stop error:', e);

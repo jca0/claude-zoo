@@ -42,19 +42,20 @@ export default function Dashboard() {
     }
   }, [sessions]);
 
-  if (sessions.length === 0) {
+  const FADE_DURATION_MS = 10_000;
+  const now = Date.now();
+  const visibleSessions = sessions
+    .filter((s) => s.status !== 'done' || (s.endedAt && now - s.endedAt < FADE_DURATION_MS));
+
+  if (visibleSessions.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <p className="text-gray-400 text-lg text-center px-4">
-          No active Claude Code sessions. Sessions will appear here when Claude Code instances start.
-        </p>
-      </div>
+      <div className="min-h-screen relative" style={{ backgroundImage: 'url(/grass.svg)', backgroundRepeat: 'repeat', backgroundSize: '128px 128px' }} />
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-white overflow-auto">
-      {sessions.map((session) => (
+    <div className="relative min-h-screen overflow-auto" style={{ backgroundImage: 'url(/grass.svg)', backgroundRepeat: 'repeat', backgroundSize: '128px 128px' }}>
+      {visibleSessions.map((session) => (
         <ClawdInstance
           key={session.id}
           session={session}

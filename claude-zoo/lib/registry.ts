@@ -49,6 +49,13 @@ export function updateToolUse(id: string, cwd: string, toolName: string, toolInp
   session.lastActivity = Date.now();
 }
 
+export function idleSession(id: string): void {
+  const session = registry.get(id);
+  if (session) {
+    session.status = 'idle';
+  }
+}
+
 export function endSession(id: string): void {
   const session = registry.get(id);
   if (session) {

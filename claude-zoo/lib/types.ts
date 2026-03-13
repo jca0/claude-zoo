@@ -1,7 +1,7 @@
 export interface Session {
   id: string;
   cwd: string;
-  status: 'active' | 'done';
+  status: 'active' | 'idle' | 'done';
   lastTool: string | null;
   lastToolInput: string | null;
   lastActivity: number;
