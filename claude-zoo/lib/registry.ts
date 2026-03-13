@@ -34,6 +34,7 @@ export function addSession(id: string, cwd: string): void {
       lastActivity: Date.now(),
       startedAt: Date.now(),
       endedAt: null,
+      lastMessage: null,
     });
   }
 }
@@ -49,10 +50,13 @@ export function updateToolUse(id: string, cwd: string, toolName: string, toolInp
   session.lastActivity = Date.now();
 }
 
-export function idleSession(id: string): void {
+export function idleSession(id: string, lastMessage?: string): void {
   const session = registry.get(id);
   if (session) {
     session.status = 'idle';
+    if (lastMessage) {
+      session.lastMessage = lastMessage;
+    }
   }
 }
 

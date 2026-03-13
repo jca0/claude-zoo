@@ -7,6 +7,7 @@ export interface Session {
   lastActivity: number;
   startedAt: number;
   endedAt: number | null;
+  lastMessage: string | null;
 }
 
 export interface ParsedMessage {
